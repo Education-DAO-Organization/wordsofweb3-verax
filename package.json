@@ -1,0 +1,25 @@
+{
+  "name": "wordsofweb3-verax",
+  "version": "0.0.1",
+  "description": "Verax attestation registry backend for the wordsofweb3.eth contribution flow",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Education-DAO-Organization/wordsofweb3-verax.git"
+  },
+  "keywords": [
+    "Verax",
+    "wordsofweb3",
+    "Education",
+    "DAO"
+  ],
+  "author": "mapachurro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Education-DAO-Organization/wordsofweb3-verax/issues"
+  },
+  "homepage": "https://github.com/Education-DAO-Organization/wordsofweb3-verax#readme"
+}
