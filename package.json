@@ -1,11 +1,12 @@
 {
   "name": "wordsofweb3-verax",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Verax attestation registry backend for the wordsofweb3.eth contribution flow",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "npm run"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -14,8 +15,7 @@
   "keywords": [
     "Verax",
     "wordsofweb3",
-    "Education",
-    "DAO"
+    "Education DAO"
   ],
   "author": "mapachurro",
   "license": "ISC",
