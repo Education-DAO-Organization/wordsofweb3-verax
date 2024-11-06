@@ -4,14 +4,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Instantiate Verax SDK with default configuration for Linea Sepolia
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA);
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA, process.env.WALLET_KEY);
 
 async function registerSchema() {
   try {
     console.log("Step 1: Precomputing schema ID from schema string...");
 
-    // Precompute schema ID
+    // Precompute schema ID for informational purposes only
     const schemaId = await veraxSdk.schema.getIdFromSchemaString(schema.schemaString);
     console.log(`Precomputed Schema ID: ${schemaId}`);
 
