@@ -1,85 +1,72 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import dotenv from "dotenv";
-import { ethers } from "ethers";
 
+// Allow access to .env file
 dotenv.config();
 
-// Use the wallet's private key from the .env file
-const walletKey = process.env.WALLET_KEY;
-let walletPublicKey = process.env.WALLET_PUBLIC_KEY;
+// Initialize the Verax SDK with the default configuration for Linea Sepolia
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA, process.env.WALLET_PUBLIC_KEY, process.env.WALLET_KEY); // Pass the public and private keys
 
-// Log the wallet key to check for formatting issues
-console.log(`Wallet Key: '${walletKey}'`);
-
-// Check the length of the wallet key
-if (walletKey.length !== 64) {
-  throw new Error("The WALLET_KEY must be a 64-character hexadecimal string.");
-}
-
-// Validate the wallet key independently
-let wallet;
-try {
-  wallet = new ethers.Wallet(walletKey);
-  console.log(`Validated wallet address: ${wallet.address}`);
-} catch (err) {
-  console.error("Failed to initialize wallet:", err.message);
-  process.exit(1);
-}
-
-// Derive public key if not provided
-if (!walletPublicKey) {
-  walletPublicKey = wallet.address;
-  console.log(`Derived Public Key: ${walletPublicKey}`);
-}
-
-// Debugging logs
-console.log(`Wallet Key (raw): ${walletKey}`);
-console.log(`Wallet Public Key: ${walletPublicKey}`);
-
-// Initialize the Verax SDK
-const veraxSdk = new VeraxSdk(
-  VeraxSdk.DEFAULT_LINEA_SEPOLIA,
-  walletPublicKey,
-  walletKey // Pass the raw private key string
-);
-
-// Schema definition
-const schema = {
-  name: "Smart Contract Audit Attestation",
-  description: "Attestation for a smart contract audit",
-  context: "https://example.com/smart-contract-audit",
-  schemaString: "{string commitHash, string repoUrl, address contractAddress}"
-};
-
-async function registerSchema() {
+// Function to deploy a default portal
+async function deployDefaultPortal() {
   try {
-    console.log("Step 1: Precomputing schema ID from schema string...");
-    const schemaId = await veraxSdk.schema.getIdFromSchemaString(schema.schemaString);
-    console.log(`Precomputed Schema ID: ${schemaId}`);
+    const portalName = "ExamplePortal"; 
+    const portalDescription = "This Portal is used as an example"; 
+    const isRevocable = true;
+    const ownerName = "Verax";
 
-    console.log("Schema details:");
-    console.log(`Name: ${schema.name}`);
-    console.log(`Description: ${schema.description}`);
-    console.log(`Context: ${schema.context}`);
-    console.log(`Schema String: ${schema.schemaString}`);
+    const portalAddress = await veraxSdk.portal.deployDefaultPortal(
+      [],
+      portalName,
+      portalDescription,
+      isRevocable,
+      ownerName
+    );
 
-    console.log("Step 2: Creating schema...");
+    console.log(`Default Portal deployed at address: ${portalAddress}`);
+    return portalAddress; // Return the portal address for further use
+  } catch (error) {
+    console.error(`Failed to deploy default portal: ${error.message}`);
+  }
+}
+
+// Function to deploy a new schema
+async function deployNewSchema(portalAddress) {
+  const schemaPayload = {
+    name: "My New Schema",
+    description: "This is a description of my new schema.",
+    context: "https://example.com/my-new-schema",
+    schemaString: "{string exampleField}",
+  };
+
+  try {
+    // Log the portal address for confirmation
+    console.log(`Deploying schema under portal: ${portalAddress}`);
+
+    // Create the new schema and wait for transaction validation
     const { transactionHash, logs } = await veraxSdk.schema.create(
-      schema.name,
-      schema.description,
-      schema.context,
-      schema.schemaString,
-      true
+      schemaPayload.name,
+      schemaPayload.description,
+      schemaPayload.context,
+      schemaPayload.schemaString,
+      true // Wait for transaction validation
     );
 
     console.log(`Schema registration transaction sent. TX Hash: ${transactionHash}`);
     const newSchemaId = logs[0].topics[1];
-    console.log(`Schema registered with ID: ${newSchemaId}`);
+    console.log(`Schema registered with ID: ${newSchemaId} under portal: ${portalAddress}`);
   } catch (error) {
-    console.error(`Failed to register schema: ${error.message}`);
-    console.error("Please check your WALLET_KEY and ensure the account has sufficient funds.");
+    console.error(`Failed to create schema: ${error.message}`);
   }
 }
 
-// Run the schema registration process
-registerSchema();
+// Main function to deploy portal and schema
+async function main() {
+  const portalAddress = await deployDefaultPortal();
+  if (portalAddress) {
+    await deployNewSchema(portalAddress);
+  }
+}
+
+// Call the main function
+main();
