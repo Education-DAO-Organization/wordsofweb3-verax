@@ -4,11 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Use the default configuration for Linea Sepolia
-const sdkConf = process.env.NETWORK === 'mainnet'
-    ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND
-    : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
 
-const veraxSdk = new VeraxSdk(sdkConf, process.env.WALLET_KEY);
+new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA, process.env.WALLET_PUBLIC_KEY, process.env.WALLET_KEY)
 
 // Schema string and metadata
 const SCHEMA = '(string term, string phonetic, string partOfSpeech, string category, string definition, string comments, address submitter)';

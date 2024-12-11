@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Education-DAO-Organization/wordsofweb3-verax#readme",
   "dependencies": {
-    "@verax-attestation-registry/verax-sdk": "^2.1.0",
+    "@verax-attestation-registry/verax-sdk": "^2.2.1",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4"
   }
