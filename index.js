@@ -1,5 +1,6 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import dotenv from "dotenv";
+import { Interface } from "ethers";
 
 // Allow access to .env file
 dotenv.config();
@@ -10,18 +11,26 @@ const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA, process.env.WALLET
 // Function to deploy a default portal
 async function deployDefaultPortal() {
   try {
-    const portalName = "ExamplePortal"; 
-    const portalDescription = "This Portal is used as an example"; 
+    const portalName = "ExamplePortal";
+    const portalDescription = "This Portal is used as an example";
     const isRevocable = true;
     const ownerName = "Verax";
 
-    const portalAddress = await veraxSdk.portal.deployDefaultPortal(
+    const { logs } = await veraxSdk.portal.deployDefaultPortal(
       [],
       portalName,
       portalDescription,
       isRevocable,
-      ownerName
+      ownerName,
+      true
     );
+
+    const eventAbi =       "event PortalRegistered(string name, string description, address portalAddress)";
+    const iface = new Interface([eventAbi]);
+    const eventTopic = "0x2b7df910f1bbb7a5c5b32de79907b6445d28b219a71bcb754b46d8d225d27e86"; // PortalRegistered event topic
+    const portalLogs = logs.filter(log => log.topics[0] === eventTopic);
+    const decodedLogs = iface.decodeEventLog("PortalRegistered", portalLogs[0].data, portalLogs[0].topics);
+    const portalAddress = decodedLogs[2];
 
     console.log(`Default Portal deployed at address: ${portalAddress}`);
     return portalAddress; // Return the portal address for further use
@@ -36,7 +45,7 @@ async function deployNewSchema(portalAddress) {
     name: "My New Schema",
     description: "This is a description of my new schema.",
     context: "https://example.com/my-new-schema",
-    schemaString: "{string exampleField}",
+    schemaString: "(string exampleField)",
   };
 
   try {
