@@ -1,0 +1,5 @@
+mapachurro@consensys-SRP-vault:~/repos/wordsofweb3-verax$ node index.js
+Default Portal deployed at address: 0x843f043E8DcF039A9c9968c1129C50bc2FAd7fAa
+Deploying schema under portal: 0x843f043E8DcF039A9c9968c1129C50bc2FAd7fAa
+Schema registration transaction sent. TX Hash: 0xacff77b3a133ef78888291fc42a42a88bf64cebd7846b46c3d40fb23704a6c93
+Schema registered with ID: 0x08834d9ffb33bfe791a81411034fd148697be42e3eb71bcb5f52422b8f56778e under portal: 0x843f043E8DcF039A9c9968c1129C50bc2FAd7fAa
