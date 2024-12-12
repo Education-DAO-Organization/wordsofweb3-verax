@@ -42,10 +42,10 @@ async function deployDefaultPortal() {
 // Function to deploy a new schema
 async function deployNewSchema(portalAddress) {
   const schemaPayload = {
-    name: "My New Schema",
-    description: "This is a description of my new schema.",
-    context: "https://example.com/my-new-schema",
-    schemaString: "(string exampleField)",
+    name: "wordsofweb3 contribution",
+    description: "Schema for contributions to wordsofweb3.eth.limo",
+    context: "https://wordsofweb3.eth.limo", // Link to the shared vocabulary or ontology
+    schemaString: "(string term, string phonetic, string partOfSpeech, string category, string definition, string comments, address submitter)"
   };
 
   try {
