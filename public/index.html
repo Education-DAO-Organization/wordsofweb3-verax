@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation Submission</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@verax-attestation-registry/verax-sdk/dist/verax-sdk.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/siwe/dist/siwe.umd.min.js"></script>
+</head>
+<body>
+    <h1>Submit an Attestation</h1>
+    <div>
+        <input type="text" id="term" placeholder="Term" required>
+        <input type="text" id="phonetic" placeholder="Phonetic" required>
+        <input type="text" id="partOfSpeech" placeholder="Part of Speech" required>
+        <input type="text" id="category" placeholder="Category" required>
+        <input type="text" id="definition" placeholder="Definition" required>
+        <input type="text" id="comments" placeholder="Comments" required>
+        <button id="siweBtn">Sign-in with Ethereum</button>
+        <button id="submitAttestation" disabled>Submit Attestation</button>
+    </div>
+    <script type="module" src="index.js"></script>
+</body>
+</html>
